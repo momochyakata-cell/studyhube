@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StudyHub  | University Group Study</title>
+<style>
+/* =========================================================
+   STUDYHUB CS — styles
+   Simple, local-only interface. No external libraries.
+   ========================================================= */
+:root{--navy:#14243a;--ink:#1b2a41;--muted:#6b7890;--bg:#f4f6fa;--card:#fff;--line:#e3e8f0;--purple:#635bdb;--purple-light:#efedff;--teal:#168f84;--green:#e4f6ee;--red:#fff0ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{min-height:100vh;display:flex}.sidebar{width:255px;background:var(--navy);color:#fff;padding:22px 17px;display:flex;flex-direction:column;gap:25px}
+.logo{font-size:20px;font-weight:800;padding:4px 8px;letter-spacing:.2px}.logo em{color:#70dbc8;font-style:normal}
+.navlabel{font-size:11px;color:#8da0b8;text-transform:uppercase;letter-spacing:1.3px;padding:0 12px;margin:7px 0}
+.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#cbd6e5;text-align:left;padding:12px;border-radius:11px}.nav button.active,.nav button:hover{background:#2a3b55;color:#fff}
+.sideinfo{margin-top:auto;background:#243751;border-radius:15px;padding:15px;font-size:13px;color:#cad7e7;line-height:1.6}
+main{flex:1;max-width:1300px;width:100%;padding:30px;margin:0 auto}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.header h1{margin:0;font-size:26px}.muted{color:var(--muted)}.small{font-size:13px}.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:var(--purple-light);color:var(--purple);font-size:12px;font-weight:700}
+.hero{background:linear-gradient(125deg,#635bdb,#357cbb);color:white;border-radius:20px;padding:26px;margin-bottom:22px}.hero h2{margin:0 0 9px;font-size:24px}.hero p{margin:0;max-width:750px;line-height:1.6;color:#e9edff}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px}.stat{display:flex;gap:12px;align-items:center}.staticon{width:42px;height:42px;border-radius:13px;background:var(--purple-light);display:grid;place-items:center;font-size:20px}.stat strong{font-size:24px;display:block;margin-top:4px}
+.section{margin-top:25px}.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.sectionhead h2{font-size:19px;margin:0}.courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.course{background:white;border:1px solid var(--line);border-radius:17px;padding:18px;cursor:pointer;transition:.15s}.course:hover{transform:translateY(-2px);border-color:#b8b2f5}.coursecode{font-size:12px;font-weight:800;color:var(--purple);letter-spacing:.6px}.course h3{margin:7px 0;font-size:17px}.course p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}.course .actions{margin-top:13px}
+.btn{border:0;background:var(--purple);color:#fff;border-radius:10px;padding:11px 15px;font-weight:700}.btn:hover{filter:brightness(.95)}.btn.secondary{background:var(--purple-light);color:var(--purple)}.btn.ghost{background:#edf1f6;color:#394b64}.btn.danger{background:#ffe7e4;color:#a43b2b}
+.page{display:none}.page.active{display:block}.field{display:grid;gap:6px;margin:12px 0}.field label{font-weight:700;font-size:13px}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:11px;background:white;color:var(--ink);width:100%}.field textarea{min-height:100px;resize:vertical}
+.lessonlist{display:grid;gap:13px}.lesson{border:1px solid var(--line);border-radius:16px;padding:18px;background:white}.lesson h3{margin:0 0 8px}.lesson p{line-height:1.65;color:#53627a}.lesson ul{line-height:1.65;color:#53627a}.topiclist{display:flex;flex-wrap:wrap;gap:7px}.topiclist span{background:#eef2f7;border-radius:8px;padding:7px 9px;font-size:13px}
+.quizpanel{max-width:820px;margin:auto;background:white;border:1px solid var(--line);border-radius:18px;padding:22px}.quiztop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.timer{font-size:20px;font-weight:800;background:#fff2d8;color:#895b00;padding:8px 12px;border-radius:12px}.qtitle{font-size:20px;line-height:1.45;margin:20px 0}.answers{display:grid;gap:10px}.answer{border:1px solid var(--line);border-radius:12px;background:#f8f9fc;padding:13px;text-align:left}.answer:hover{border-color:var(--purple)}.answer.selected{background:var(--purple-light);border-color:var(--purple)}.answer.correct{background:var(--green);border-color:var(--teal)}.answer.wrong{background:var(--red);border-color:#d66}.progressbar{height:8px;background:#edf0f5;border-radius:99px;overflow:hidden;margin:13px 0}.progressbar span{display:block;height:100%;background:var(--teal);width:0}.result{padding:17px;border-radius:13px;background:#f3f6fa;line-height:1.7}.hidden{display:none!important}.split{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.note{line-height:1.6;color:#55647b}.footer{text-align:center;color:#8a96a8;font-size:12px;padding:25px}
+@media(max-width:850px){.sidebar{width:220px}.grid{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}}
+@media(max-width:620px){.layout{display:block}.sidebar{width:100%;padding:12px;gap:9px}.logo{padding:3px 5px}.nav{grid-template-columns:repeat(4,1fr)}.nav button{text-align:center;font-size:12px;padding:9px 4px}.navlabel,.sideinfo{display:none}main{padding:18px 13px}.header h1{font-size:22px}.hero{padding:20px}.hero h2{font-size:20px}.grid{grid-template-columns:1fr 1fr}.courses{grid-template-columns:1fr}.quizpanel{padding:16px}.qtitle{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo">📘 StudyHub <em>Team</em></div>
+  <div>
+    <div class="navlabel">Workspace</div>
+    <nav class="nav">
+      <button class="active" data-page="dashboard">🏠 Home</button>
+      <button data-page="courses">📚 Courses</button>
+      <button data-page="group">👥 Group study</button>
+      <button data-page="quizsetup">📝 Quiz</button>
+    </nav>
+  </div>
+  <div>
+    <div class="navlabel">Your study space</div>
+    <nav class="nav"><button data-page="results">🏅 Quiz results</button></nav>
+  </div>
+  <div class="sideinfo"><strong>Study together.</strong><br>Choose a course, review notes, then challenge your group with a timed quiz.</div>
+</aside>
+<main>
+  <div class="header"><div><h1 id="pageTitle">Group Study </h1><div class="muted small">University Computer Science • Offline learning</div></div><span class="pill">Offline ready</span></div>
+
+  <section id="dashboard" class="page active">
+    <div class="hero"><h2>Welcome to your study space.</h2><p>Review your semester courses, revise key concepts with your group and take timed quizzes. This app works locally in your browser without an internet connection.</p></div>
+    <div class="grid">
+      <div class="card stat"><div class="staticon">📚</div><div><span class="muted small">Courses</span><strong>8</strong></div></div>
+      <div class="card stat"><div class="staticon">📝</div><div><span class="muted small">Quiz attempts saved</span><strong id="attemptCount">0</strong></div></div>
+      <div class="card stat"><div class="staticon">⭐</div><div><span class="muted small">Best score</span><strong id="bestScore">—</strong></div></div>
+    </div>
+    <div class="section"><div class="sectionhead"><h2>Your semester courses</h2><button class="btn secondary" onclick="go('courses')">View all</button></div><div class="courses" id="dashboardCourses"></div></div>
+  </section>
+
+  <section id="courses" class="page">
+    <div class="sectionhead"><h2>Courses</h2><span class="muted small">Your registered semester subjects</span></div>
+    <div class="courses" id="allCourses"></div>
+  </section>
+
+  <section id="courseDetail" class="page">
+    <div id="courseContent"></div>
+  </section>
+
+  <section id="group" class="page">
+    <div class="hero"><h2>Group study room</h2><p>Use this page to structure your study session. Choose a course, set a goal and use the discussion prompts to guide group learning.</p></div>
+    <div class="split">
+      <div class="card">
+        <h2>Study session plan</h2>
+        <div class="field"><label for="groupCourse">Course</label><select id="groupCourse"></select></div>
+        <div class="field"><label for="groupGoal">Session goal</label><textarea id="groupGoal" placeholder="What are we trying to understand or finish today?"></textarea></div>
+        <button class="btn" onclick="saveGroupPlan()">Save session plan</button>
+        <div id="planMessage" class="muted small" style="margin-top:10px"></div>
+      </div>
+      <div class="card"><h2>Group discussion prompts</h2><ol class="note"><li>One person explains the concept in their own words.</li><li>Another member gives a practical example.</li><li>Ask the group to identify assumptions or limitations.</li><li>Rotate roles and summarize the key takeaways.</li><li>Finish with a short quiz together.</li></ol></div>
+    </div>
+    <div class="section card"><h2>Saved group plan</h2><div id="savedPlan" class="note">No plan saved yet.</div></div>
+  </section>
+
+  <section id="quizsetup" class="page">
+    <div class="hero"><h2>Timed quiz challenge</h2><p>Enter your student details, choose a course and quiz length. Questions are randomized. Your attempt summary is saved on this device.</p></div>
+    <div class="card" style="max-width:800px">
+      <div class="field"><label for="studentName">Student name *</label><input id="studentName" placeholder="Enter your full name" autocomplete="name"></div>
+      <div class="field"><label for="indexNumber">Index number *</label><input id="indexNumber" placeholder="Enter your index number" autocomplete="off"></div>
+      <div class="field"><label for="quizCourse">Course *</label><select id="quizCourse"></select></div>
+      <div class="field"><label for="quizDuration">Quiz duration</label><select id="quizDuration"><option value="30">30 minutes</option><option value="45" selected>45 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option></select></div>
+      <div class="field"><label for="quizMode">Quiz type</label><select id="quizMode"><option value="mixed">Mixed theory quiz</option><option value="practical">Practical / code-writing (C++ or SQL)</option></select></div><div class="field"><label for="quizLength">Number of questions</label><select id="quizLength"><option value="20">20 questions</option><option value="30" selected>30 questions</option><option value="40">40 questions</option></select></div>
+      <button class="btn" onclick="startQuiz()">Start quiz →</button>
+      <p class="muted small">Student name and index number are required before starting. Quiz timer begins after you start.</p>
+    </div>
+  </section>
+
+  <section id="quizlive" class="page"><div class="quizpanel" id="quizLiveContent"></div></section>
+  <section id="results" class="page">
+    <div class="sectionhead"><h2>Saved quiz attempts</h2><button class="btn danger" onclick="clearResults()">Clear results</button></div>
+    <div id="resultsList" class="lessonlist"></div>
+  </section>
+
+  <div class="footer">StudyHub you • Built for offline group study • HTML, CSS and JavaScript</div>
+</main>
+</div>
+
+<script>
+/* =========================================================
+   STUDYHUB CS — app logic
+   To add a course, edit the COURSES array.
+   To add questions, add question objects to that course's bank.
+   ========================================================= */
+
+// Semester courses based on the registration slip supplied.
+const COURSES = [
+ {code:"CSTM251",name:"Analytical Mathematics",icon:"📐",topics:["Algebra and equations","Functions and graphs","Matrices and determinants","Differentiation","Integration","Logic and sets"],notes:"Analytical Mathematics supports computer science through mathematical reasoning, algebra, functions, calculus and related methods. Review definitions, work through examples by hand, and explain each step to your study group."},
+ {code:"BVC251",name:"Database Management Systems",icon:"🗄️",topics:["Database concepts and architecture","ER modelling","Relational model","SQL queries","Normalization","Transactions and concurrency"],notes:"Database Management Systems organize and manage data. Key ideas include conceptual modelling, relational tables, keys, SQL, normalization, transaction properties and concurrent access."},
+ {code:"BVC253",name:"Computer Organization & Architecture",icon:"⚙️",topics:["Computer components","CPU and instruction cycle","Registers and ALU","Memory hierarchy","Instruction formats","I/O and buses"],notes:"Computer organization focuses on the operational units and their connections, while architecture includes programmer-visible design concepts such as instruction sets. Study CPU components, memory, data paths, buses and instruction execution."},
+ {code:"BVC255",name:"Programming with C++",icon:"💻",topics:["C++ syntax and types","Variables and expressions","Selection and iteration","Functions","Arrays and strings","Classes and objects"],notes:"C++ is a general-purpose programming language. Practice writing, compiling, tracing and debugging small programs. Understand types, expressions, control flow, functions, arrays and object-oriented programming."},
+ {code:"BVC257",name:"IT Infrastructure Landscape",icon:"🧱",topics:["Infrastructure overview","Servers and storage","Virtualization","Cloud services","Operating systems","Infrastructure monitoring"],notes:"IT infrastructure combines hardware, software, networks, storage and services that support digital systems. Compare on-premises, virtualized and cloud infrastructure, and learn the role of management and monitoring."},
+ {code:"BVC259",name:"Data Communication and Computer Networks",icon:"🌐",topics:["Network fundamentals","OSI and TCP/IP models","Transmission media","IP addressing","Routing and switching","Network services"],notes:"Data communication describes the exchange of data between devices. Study communication components, network models, transmission media, addressing, switching, routing and common network services."},
+ {code:"BVC261",name:"High Performance Computing (HPC)",icon:"🚀",topics:["HPC concepts","Parallelism","Shared and distributed memory","Clusters","Grid and cloud computing","Performance and scalability"],notes:"High Performance Computing uses powerful systems and parallel techniques to solve computationally demanding problems. Compare serial and parallel execution, clusters, distributed memory, scalability and performance metrics."},
+ {code:"URC201",name:"Entrepreneurship and Business Creation",icon:"💡",topics:["Entrepreneurial mindset","Problem and opportunity","Business models","Market research","Business planning","Pitching and finance basics"],notes:"Entrepreneurship turns ideas and opportunities into value. Explore customer needs, value propositions, business models, market research, planning, basic finance and presenting a venture idea."}
+];
+
+// Sample practice bank. Extend each array with additional question objects.
+const QUESTION_BANK = {
+ CSTM251:[
+  {q:"If f(x)=2x+3, what is f(4)?",o:["8","11","14","7"],a:1,e:"Substitute x=4: 2(4)+3=11."},
+  {q:"Which set contains all real numbers x satisfying x²=9?",o:["{3}","{-3}","{-3, 3}","{0, 9}"],a:2,e:"Both 3 and -3 square to 9."},
+  {q:"What is the determinant of the 2×2 matrix [[1,2],[3,4]]?",o:["2","-2","10","4"],a:1,e:"The determinant is 1×4 − 2×3 = -2."},
+  {q:"What is the derivative of x²?",o:["x","2x","2","x³"],a:1,e:"The power rule gives d(x²)/dx=2x."},
+  {q:"The union of sets A and B contains:",o:["Only elements in A","Only elements in B","Elements in A or B or both","Elements in neither"],a:2,e:"Union combines elements belonging to either set."}
+ ],
+ BVC251:[
+  {q:"In a relational table, a primary key is used to:",o:["Uniquely identify each row","Sort every column","Encrypt the table","Duplicate records"],a:0,e:"A primary key uniquely identifies each row in a table."},
+  {q:"Which SQL statement retrieves rows from a table?",o:["UPDATE","SELECT","ALTER","DROP"],a:1,e:"SELECT is used to retrieve query results."},
+  {q:"Normalization primarily helps reduce:",o:["Data redundancy and anomalies","Network latency","CPU temperature","Screen resolution"],a:0,e:"Normalization organizes relations to reduce unnecessary duplication and update anomalies."},
+  {q:"A foreign key typically:",o:["Identifies a monitor","Links a row to a key in another or same table","Deletes all records","Stores a password only"],a:1,e:"A foreign key references a candidate or primary key to express a relationship."},
+  {q:"Which ACID property means a transaction is all-or-nothing?",o:["Consistency","Isolation","Atomicity","Durability"],a:2,e:"Atomicity means the transaction succeeds as a whole or is rolled back."}
+ ],
+ BVC253:[
+  {q:"Which CPU component performs arithmetic and logical operations?",o:["ALU","Control unit","RAM","Bus interface only"],a:0,e:"The Arithmetic Logic Unit performs arithmetic and logical operations."},
+  {q:"Which memory is generally volatile?",o:["SSD","ROM","RAM","Optical disc"],a:2,e:"RAM typically loses its contents when power is removed."},
+  {q:"The instruction cycle commonly includes:",o:["Fetch, decode, execute","Compile, print, scan","Connect, browse, download","Save, close, delete"],a:0,e:"A simplified instruction cycle fetches an instruction, decodes it and executes it."},
+  {q:"What is the purpose of a CPU register?",o:["Store small, fast values used by the CPU","Provide long-term cloud storage","Display images","Connect separate buildings"],a:0,e:"Registers provide very fast storage for operands, addresses or control information."},
+  {q:"Which is typically the fastest storage in the memory hierarchy?",o:["Hard disk","CPU register","DVD","Remote backup"],a:1,e:"CPU registers are among the fastest storage locations."}
+ ],
+ BVC255:[
+  {q:"Which C++ statement declares an integer variable?",o:["int age;","age integer;","number age;","integer = age;"],a:0,e:"The int type can declare an integer variable, for example int age;."},
+  {q:"Which operator tests equality in C++?",o:["=","==","!=","=>"],a:1,e:"== compares two values for equality; = assigns a value."},
+  {q:"What is the purpose of a loop?",o:["Repeat instructions","Define a header file","Rename a variable","Declare a class only"],a:0,e:"Loops repeat a block of instructions according to a condition or iteration."},
+  {q:"Which keyword returns a value from a function?",o:["send","yield","return","exitvalue"],a:2,e:"return provides the function's return value and exits the function."},
+  {q:"In C++, an array is commonly used to:",o:["Store a fixed sequence of same-type elements","Automatically connect to a network","Create a new operating system","Replace every function"],a:0,e:"Arrays store multiple elements of the same type in indexed positions."}
+ ],
+ BVC257:[
+  {q:"What is virtualization?",o:["Creating virtual versions of computing resources","Only installing a printer","Encrypting every file","Replacing all networks"],a:0,e:"Virtualization abstracts physical resources to provide virtual resources such as machines or storage."},
+  {q:"Which is an example of infrastructure?",o:["Servers, networks and storage","Only a social media post","A single spreadsheet formula","A printed poster"],a:0,e:"Servers, networks and storage are common infrastructure components."},
+  {q:"A hypervisor is associated with:",o:["Virtual machine management","Photo editing","SQL sorting","Email writing"],a:0,e:"A hypervisor creates and manages virtual machines."},
+  {q:"Cloud computing commonly provides:",o:["On-demand network access to shared configurable resources","Only offline paper records","A single fixed hardware device","No computing services"],a:0,e:"Cloud computing offers on-demand access to shared resources, often with rapid provisioning."},
+  {q:"Infrastructure monitoring is used to:",o:["Observe system health and performance","Write novels","Replace all user accounts","Prevent all software updates"],a:0,e:"Monitoring tracks metrics, availability and system health."}
+ ],
+ BVC259:[
+  {q:"What does IP stand for in networking?",o:["Internet Protocol","Internal Processor","Input Program","Integrated Power"],a:0,e:"IP stands for Internet Protocol."},
+  {q:"Which device forwards packets between networks?",o:["Router","Keyboard","Repeater lamp","Printer"],a:0,e:"Routers forward packets between networks."},
+  {q:"Which OSI layer is associated with routing?",o:["Physical","Network","Presentation","Application"],a:1,e:"The Network layer (Layer 3) is associated with routing."},
+  {q:"A LAN usually covers:",o:["A limited local area","The entire planet only","Outer space","All continents by definition"],a:0,e:"A local area network usually spans a limited local area such as a room, building or campus."},
+  {q:"DNS primarily translates:",o:["Domain names into IP information","Binary into electricity","Images into sound","Passwords into usernames"],a:0,e:"DNS resolves domain names to IP addresses and related records."}
+ ],
+ BVC261:[
+  {q:"HPC is primarily aimed at:",o:["Solving demanding computational problems efficiently","Replacing every keyboard","Only streaming video","Reducing file names"],a:0,e:"HPC uses advanced systems and parallel approaches for demanding computation."},
+  {q:"Parallel computing involves:",o:["Multiple computations or parts executing concurrently","Only one instruction forever","Printing several documents","Turning off all processors"],a:0,e:"Parallel computing allows multiple tasks or computational parts to execute at the same time."},
+  {q:"A cluster commonly consists of:",o:["Connected computers working together","One isolated calculator","Only mobile apps","A collection of paper files"],a:0,e:"Clusters connect multiple computers to work together as a system."},
+  {q:"Speedup compares:",o:["Serial execution time with parallel execution time","File sizes with screen sizes","Usernames with passwords","Memory names with CPU names"],a:0,e:"Speedup is commonly serial time divided by parallel time for the same problem."},
+  {q:"A scalability study examines:",o:["How performance changes as resources or problem size grow","Only a program's font","A keyboard's layout","The colour of a server"],a:0,e:"Scalability considers performance as resource counts or problem sizes increase."}
+ ],
+ URC201:[
+  {q:"A value proposition describes:",o:["Value offered to customers","A list of CPU registers","A network routing table","A file extension"],a:0,e:"A value proposition describes the value or benefit a product or service offers customers."},
+  {q:"Market research helps entrepreneurs:",o:["Understand customers and the market","Guarantee all profits","Avoid all competition","Eliminate business risks completely"],a:0,e:"Market research helps identify customer needs, market conditions and potential demand."},
+  {q:"A business model explains:",o:["How a venture creates, delivers and captures value","How a CPU decodes instructions","How a network cable is manufactured","Only the company's logo"],a:0,e:"A business model describes how a business creates, delivers and captures value."},
+  {q:"A target customer is:",o:["The intended buyer or user group","A computer's memory cell","Every person on earth necessarily","A financial statement"],a:0,e:"Target customers are the specific people or organizations a venture aims to serve."},
+  {q:"An elevator pitch should generally be:",o:["Brief and clear about the problem, solution and value","A full textbook chapter","Only a list of passwords","A technical manual"],a:0,e:"An elevator pitch communicates the venture's core idea and value concisely."}
+ ]
+};
+
+
+// Supplement banks to support 20/30/40-question quizzes. These are course-specific
+// concept checks generated from the course topic outlines; edit/add entries freely.
+const BANK_SUPPLEMENTS = {
+ CSTM251:["Algebraic manipulation","Functions and graphs","Limits and continuity","Differentiation","Integration","Matrices","Vectors","Probability basics","Statistics and data interpretation","Linear equations","Quadratic equations","Trigonometry","Sequences and series","Optimization","Mathematical modelling"],
+ BVC251:["Database schemas","Primary keys","Foreign keys","Constraints","SELECT and filtering","JOIN operations","Aggregate functions","GROUP BY and HAVING","Subqueries","INSERT and UPDATE","DELETE","Views","Indexing","Normalization","Transactions and ACID","Concurrency control","Backup and recovery","ER diagrams","Relational algebra","Data integrity"],
+ BVC253:["Instruction cycle","CPU registers","ALU","Control unit","Cache memory","RAM and ROM","Addressing modes","Machine instructions","Pipelining","Interrupts","I/O organization","Bus systems","Memory hierarchy","Binary arithmetic","Number representation","Assembly concepts","RISC and CISC","Virtual memory","Performance metrics","Storage devices"],
+ BVC255:["Variables and data types","Operators","Conditional statements","Loops","Functions","Arrays","Strings","Pointers","References","Structs","Classes","Constructors","Inheritance","Polymorphism","Encapsulation","Templates","Exception handling","File streams","STL containers","Recursion","Debugging"],
+ BVC257:["Infrastructure components","Server roles","Virtualization","Cloud service models","Deployment models","Storage systems","Network services","Identity management","Monitoring","Capacity planning","Availability","Security controls","Backup strategy","Disaster recovery","Containers","Data centres","Automation","Configuration management","Service management","Infrastructure lifecycle"],
+ BVC259:["OSI model","TCP/IP suite","IPv4 addressing","Subnetting","IPv6 basics","Ethernet","Switching","Routing","DNS","DHCP","TCP and UDP","Wireless networking","Network topologies","Transmission media","Error detection","Flow control","Congestion","Network security","Packet analysis","Network troubleshooting"],
+ BVC261:["Parallelism","Concurrency","Speedup","Efficiency","Amdahl's law","Gustafson's law","Shared memory","Distributed memory","Clusters","Grid computing","Cloud HPC","MPI concepts","OpenMP concepts","GPU computing","Load balancing","Scalability","Synchronization","Performance profiling","Parallel algorithms","Benchmarking"],
+ URC201:["Opportunity identification","Business models","Value proposition","Market research","Customer segments","Revenue streams","Cost structure","Business planning","Marketing","Financial planning","Entrepreneurial risk","Innovation","Pitching","Business ethics","Operations","Competitive analysis","Growth strategy","Lean startup","Customer validation","Team roles"]
+};
+const PRACTICAL_TASKS = {
+ BVC255:[
+  {q:"Write a C++ program that asks for two integers and prints their sum. Include main() and the necessary input/output statement.",hint:"Use cin to read and cout to display the sum."},
+  {q:"Write a C++ loop that prints the numbers 1 through 10.",hint:"A for loop with an inclusive condition is one approach."},
+  {q:"Create a function named isEven that accepts an integer and returns true if it is even, otherwise false.",hint:"Use the modulo operator and a bool return type."},
+  {q:"Write a simple class Student with a public name string and a method that prints the name.",hint:"Declare a class, member, and method."},
+  {q:"Write a C++ program that finds the largest of three integer values.",hint:"Compare the values using if/else or a suitable expression."},
+  {q:"Declare an integer array of five elements and write a loop to calculate their total.",hint:"Use an accumulator initialized before the loop."},
+  {q:"Write a short example showing a constructor for a class named Book that stores a title.",hint:"The constructor name matches the class name."},
+  {q:"Write a program fragment that opens a file named data.txt for writing and writes one line to it.",hint:"Use ofstream from fstream."}
+ ],
+ BVC251:[
+  {q:"Write an SQL statement to create a Students table with student_id as a primary key and name and programme columns.",hint:"CREATE TABLE with a PRIMARY KEY constraint."},
+  {q:"Write an SQL query to select all students whose programme is 'Computer Science'.",hint:"Use SELECT, FROM and WHERE."},
+  {q:"Write an SQL statement to insert a student with ID 1001, name 'Ama', and programme 'Computer Science'.",hint:"INSERT INTO ... VALUES ..."},
+  {q:"Write a query to count students grouped by programme.",hint:"COUNT(*) with GROUP BY."},
+  {q:"Write an SQL query that joins Students and Courses using a student_id relationship (assume Enrolment holds both IDs).",hint:"Join Students to Enrolment, and Enrolment to Courses."},
+  {q:"Write an SQL UPDATE statement to change the name of student_id 1001 to 'Ama Mensah'.",hint:"UPDATE ... SET ... WHERE ..."},
+  {q:"Write a query to list programmes having more than 10 students.",hint:"GROUP BY programme and use HAVING COUNT(*) > 10."},
+  {q:"Write an SQL statement to delete the record for student_id 1001.",hint:"DELETE FROM with a WHERE clause."}
+ ]
+};
+function expandBank(){
+ for(const c of COURSES){
+  const base=QUESTION_BANK[c.code]||[], topics=BANK_SUPPLEMENTS[c.code]||[];
+  // Topic-based question templates provide a sizeable editable revision bank.
+  topics.forEach((topic,i)=>{
+   base.push({q:`Which statement best describes the central idea of ${topic} in ${c.name}?`,
+    o:[`It is a core concept or technique used in ${c.name}`,`It is unrelated to computing and this course`,`It replaces all other course concepts`,`It is only a file naming convention`],
+    a:0,e:`${topic} is among the topics listed for ${c.name}. Review its definition, applications and limitations.`});
+   base.push({q:`When studying ${topic}, which is the most useful first step?`,
+    o:[`Define the concept and connect it to a worked example`,`Ignore the context and memorize unrelated terms`,`Assume it has no practical use`,`Skip the prerequisites`],
+    a:0,e:`Start by understanding ${topic}, then apply it to a relevant example.`});
+  });
+  QUESTION_BANK[c.code]=base.slice(0,40);
+ }
+}
+expandBank();
+
+// Local persistence helpers: browser storage is used only on this device.
+function readStore(key, fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch(e){return fallback}}
+function writeStore(key,value){localStorage.setItem(key,JSON.stringify(value))}
+let attempts=readStore("studyhubAttempts",[]);
+let quizState=null, timerHandle=null, selectedAnswer=null;
+
+function go(page){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));let target=document.getElementById(page);if(target)target.classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));let titles={dashboard:"Group Study Dashboard",courses:"Courses",group:"Group Study Room",quizsetup:"Quiz Setup",quizlive:"Timed Quiz",results:"Quiz Results",courseDetail:"Course Study"};document.getElementById("pageTitle").textContent=titles[page]||"StudyHub CS";if(page==="results")renderResults();if(page==="dashboard")renderDashboardStats();}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+
+function courseCard(c){return `<article class="course" onclick="openCourse('${c.code}')"><div class="coursecode">${c.code}</div><h3>${c.icon} ${c.name}</h3><p>${c.topics.slice(0,3).join(" • ")}</p><div class="actions"><span class="pill">Open course →</span></div></article>`}
+function renderCourses(){document.getElementById("allCourses").innerHTML=COURSES.map(courseCard).join("");document.getElementById("dashboardCourses").innerHTML=COURSES.slice(0,4).map(courseCard).join("")}
+function populateSelects(){["quizCourse","groupCourse"].forEach(id=>{document.getElementById(id).innerHTML=COURSES.map(c=>`<option value="${c.code}">${c.code} — ${c.name}</option>`).join("")})}
+function openCourse(code){let c=COURSES.find(x=>x.code===code);if(!c)return;go("courseDetail");document.getElementById("courseContent").innerHTML=`<div class="sectionhead"><button class="btn ghost" onclick="go('courses')">← Back to courses</button><span class="pill">${c.code}</span></div><div class="hero"><h2>${c.icon} ${c.name}</h2><p>${c.notes}</p></div><div class="card"><h2>Topics to review</h2><div class="topiclist">${c.topics.map(t=>`<span>${t}</span>`).join("")}</div><div class="section"><h2>Study guidance</h2><p class="note">For each topic, take turns explaining the concept without reading. Ask another group member to provide an example or challenge the explanation. Write a short summary and then use a quiz to check your understanding.</p><button class="btn" onclick="prepareCourseQuiz('${c.code}')">Quiz this course →</button></div></div>`}
+function prepareCourseQuiz(code){document.getElementById("quizCourse").value=code;go("quizsetup")}
+function renderDashboardStats(){document.getElementById("attemptCount").textContent=attempts.length;let best=attempts.length?Math.max(...attempts.map(a=>a.percent)):null;document.getElementById("bestScore").textContent=best===null?"—":best+"%"}
+function startQuiz(){let name=document.getElementById("studentName").value.trim(),index=document.getElementById("indexNumber").value.trim(),code=document.getElementById("quizCourse").value;if(!name||!index){alert("Please enter your name and index number before starting.");return}let bank=QUESTION_BANK[code]||[];let mode=document.getElementById("quizMode").value;if(mode==="practical"&&!PRACTICAL_TASKS[code]){alert("Practical tasks are currently available for C++ and Database Management Systems. Choose Mixed theory quiz for this course.");return}if(mode==="practical")bank=PRACTICAL_TASKS[code].map((t,i)=>({q:t.q,o:["Practical response"],a:0,e:t.hint,practical:true}));if(!bank.length){alert("There are no questions for this course yet.");return}let count=Math.min(Number(document.getElementById("quizLength").value),bank.length);let pool=[...bank].sort(()=>Math.random()-.5).slice(0,count);quizState={name,index,code,mode,questions:pool,position:0,answers:[],texts:[],seconds:Number(document.getElementById("quizDuration").value)*60};go("quizlive");renderQuestion();startTimer()}
+function startTimer(){clearInterval(timerHandle);timerHandle=setInterval(()=>{if(!quizState)return;quizState.seconds--;updateTimer();if(quizState.seconds<=0){clearInterval(timerHandle);finishQuiz(true)}},1000)}
+function updateTimer(){let el=document.getElementById("timer");if(el){let m=Math.floor(quizState.seconds/60),s=quizState.seconds%60;el.textContent=`${m}:${String(s).padStart(2,"0")}`}}
+function renderQuestion(){if(!quizState)return;let q=quizState.questions[quizState.position];selectedAnswer=null;let pct=quizState.position/quizState.questions.length*100;document.getElementById("quizLiveContent").innerHTML=`<div class="quiztop"><span class="pill">${quizState.code} • ${quizState.position+1}/${quizState.questions.length}</span><div class="timer" id="timer"></div></div><div class="progressbar"><span style="width:${pct}%"></span></div><div class="qtitle">${q.q}</div><div class="answers">${q.practical?`<textarea id="practicalAnswer" rows="8" placeholder="Type your code or SQL answer here..." style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font-family:monospace"></textarea><p class="muted small">Practical answers are reviewed against the suggested solution after submission; the app does not compile or execute code.</p>`:q.o.map((o,i)=>`<button class="answer" data-answer="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div><div style="display:flex;justify-content:flex-end;margin-top:18px"><button class="btn" id="nextBtn" disabled>${quizState.position===quizState.questions.length-1?"Finish quiz":"Next question →"}</button></div>`;if(q.practical){document.getElementById("nextBtn").disabled=false}else document.querySelectorAll(".answer").forEach(b=>b.onclick=()=>{selectedAnswer=Number(b.dataset.answer);document.querySelectorAll(".answer").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");document.getElementById("nextBtn").disabled=false});document.getElementById("nextBtn").onclick=advanceQuestion;updateTimer()}
+function advanceQuestion(){let q=quizState.questions[quizState.position];quizState.answers.push(q.practical?0:selectedAnswer);quizState.texts.push(q.practical?(document.getElementById("practicalAnswer")?.value||""):"");if(quizState.position<quizState.questions.length-1){quizState.position++;renderQuestion()}else finishQuiz(false)}
+function finishQuiz(timedOut){clearInterval(timerHandle);if(!quizState)return;if(timedOut && quizState.answers.length===quizState.position){quizState.answers.push(selectedAnswer);}while(quizState.answers.length<quizState.questions.length)quizState.answers.push(null);let score=0;quizState.questions.forEach((q,i)=>{if(quizState.answers[i]===q.a)score++});let percent=Math.round(score/quizState.questions.length*100);let elapsed=Math.max(0,Number(document.getElementById("quizDuration").value)*60-quizState.seconds);let record={name:quizState.name,index:quizState.index,code:quizState.code,course:COURSES.find(c=>c.code===quizState.code).name,score,total:quizState.questions.length,percent,date:new Date().toLocaleString(),timedOut,elapsed};attempts.unshift(record);writeStore("studyhubAttempts",attempts);let detail=quizState.questions.map((q,i)=>`<div class="lesson"><b>Q${i+1}. ${q.q}</b><p>Your answer: ${quizState.answers[i]===null||quizState.answers[i]===undefined?"Not answered":q.o[quizState.answers[i]]}<br>Correct answer: ${q.practical?"Practical response submitted (review it using the guidance below)":q.o[q.a]}<br>${q.practical?`Your written response:<pre style="white-space:pre-wrap">${escapeHTML(quizState.texts?.[i]||"")}</pre>`:""}<span class="muted">${q.e}</span></p></div>`).join("");quizState=null;renderDashboardStats();go("results");document.getElementById("resultsList").innerHTML=`<div class="card result"><h2>Quiz completed: ${score}/${record.total} (${percent}%)</h2><p>${timedOut?"Time expired. ":""}Name: ${record.name}<br>Index number: ${record.index}<br>Course: ${record.code} — ${record.course}<br>Completed: ${record.date}</p><button class="btn secondary" onclick="renderResults()">View saved attempts</button></div><div class="section"><h2>Answer review</h2>${detail}</div>`}
+function renderResults(){let list=document.getElementById("resultsList");if(!attempts.length){list.innerHTML='<div class="card muted">No quiz attempts saved yet.</div>';return}list.innerHTML=attempts.map(a=>`<article class="lesson"><div class="coursecode">${a.code}</div><h3>${a.name} <span class="pill">${a.percent}%</span></h3><p class="note">Index: ${a.index}<br>Course: ${a.course}<br>Score: ${a.score}/${a.total}<br>Date: ${a.date}${a.timedOut?" • Timer expired":""}</p></article>`).join("")}
+function clearResults(){if(confirm("Clear all saved quiz results on this browser?")){attempts=[];writeStore("studyhubAttempts",attempts);renderDashboardStats();renderResults()}}
+function saveGroupPlan(){let code=document.getElementById("groupCourse").value,goal=document.getElementById("groupGoal").value.trim();if(!goal){alert("Write a session goal first.");return}let plan={code,goal,date:new Date().toLocaleString()};writeStore("studyhubGroupPlan",plan);renderGroupPlan();document.getElementById("planMessage").textContent="Plan saved locally on this device."}
+function renderGroupPlan(){let p=readStore("studyhubGroupPlan",null),el=document.getElementById("savedPlan");if(!p){el.textContent="No plan saved yet.";return}let c=COURSES.find(x=>x.code===p.code);el.innerHTML=`<strong>${c?c.code+" — "+c.name:p.code}</strong><p>${escapeHTML(p.goal)}</p><small class="muted">Saved: ${p.date}</small>`}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+// Initialize app
+renderCourses();populateSelects();renderDashboardStats();renderGroupPlan();
+</script>
+</body>
+</html>
